@@ -60,8 +60,7 @@ failing case (atuin's two bindings collapsing into one, so ctrl-r reverts) is
 shown before and after in the keybinding table, which goes from one `atuin`
 row to two. So my rubric treated "any case the test plan names" as if it
 meant "a failing case the repro reproduced". To fix it, I would limit that
-clause to failure cases from the repro evidence, and let tests in the diff
-cover new behaviors.
+clause to failure cases from the repro evidence, and run tests.
 
 **Check rationale**
 

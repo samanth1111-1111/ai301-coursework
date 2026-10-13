@@ -15,7 +15,7 @@ label is not graded.
 
 **Pull request**
 
-PASTE-PR-LINK-HERE
+https://github.com/samanth1111-1111/pathreview-ai301-fa26-s1/pull/1
 
 **Branch**
 

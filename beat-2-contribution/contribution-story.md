@@ -55,10 +55,9 @@ happened; these entries are the toolkit's own timeline.
 All four entries are graded. Keep every heading below, and fill each
 one in the week it belongs to.
 
-**Unit 5: [one line on the tool work]**
+**Unit 5: Turned my unit-1 issue-select skill into issue-scout, a scout that searches all of GitHub**
 
-[2-4 sentences: what you built (the scout, your strategy), what broke
-or fell short, what changed because of it.]
+I wrote a search strategy with three `gh search issues` queries traced to my fit profile (Python, JavaScript, and Python docs, each limited to open, unassigned good-first issues with 1–6 comments) and ranking rules that drop toolchain and design-decision labels and cap each repo at two results. My first scan fell short: 4 of the 5 issues it graded were already claimed by open PRs or a maintainer's assignment, because ordering by "most recently updated" rewarded the claim comments themselves, and the one accept (openlibrary#14322) passed `maintainer-acknowledged` only on bot-applied labels while the bot's own comment said it still needed lead review. I added `-linked:pr` to every query and switched to fewest-comments-first, widened my label rule to catch "Needs: Triage", and patched the rubric so bot labels and triage labels no longer count as a maintainer agreeing; re-running the query showed the claimed issues gone.
 
 **Unit 6: [one line on the tool work]**
 

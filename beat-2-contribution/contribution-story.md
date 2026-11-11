@@ -64,7 +64,7 @@ I merged my three voice-guide copies into one guide at `~/.claude/voice-guard/`,
 
 **Unit 7: Installed the ship-gate and wrote a ship manifest for WebDevTools that runs on Windows**
 
-The install worked on the first try, and the hook test produced both stops: `ship-gate: STOP.` and a voice-guard stop logged in `guard-log.md`. Writing the manifest was the hard part, because the ship-gate runs each check in cmd.exe on Windows. There, the repo's `npm test` fails (`'NODE_OPTIONS' is not recognized`), so I switched the test rows to contributing.md's form, `set "NODE_OPTIONS=--experimental-vm-modules" && npx jest`. The repo's `npm run format:check` flagged 193 files I never touched, because `core.autocrlf=true` checks them out with CRLF line endings. So I moved the full check to the excluded table with that reason and added a Prettier row for just my test folder, which caught a missing newline at the end of my test file. I haven't run the full ship-gate on my branch yet, so it hasn't given a PASS or a reject.
+The install worked on the first try, and the hook test produced both stops: `ship-gate: STOP.` and a voice-guard stop logged in `guard-log.md`. Writing the manifest was the hard part, because the ship-gate runs each check in cmd.exe on Windows. There, the repo's `npm test` fails (`'NODE_OPTIONS' is not recognized`), so I switched the test rows to contributing.md's form, `set "NODE_OPTIONS=--experimental-vm-modules" && npx jest`. The repo's `npm run format:check` flagged 193 files I never touched, because `core.autocrlf=true` checks them out with CRLF line endings. So I moved the full check to the excluded table with that reason and added a Prettier row for just my test folder, which caught a missing newline at the end of my test file. On 2026-11-10 I ran the ship-gate on my branch three times. It blocked first on Prettier, because `core.autocrlf=true` had given my checked-out test file CRLF line endings (the committed file was LF and fine), then on my own pr-precheck's `repo-checks`, because my description overstated the format check. It passed on the third run after I fixed both.
 
 **Unit 8: Installed the PR monitor, wrote a WebDevTools playbook, and ran it on PR #702**
 
@@ -150,7 +150,7 @@ File                 | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #
   Editor.jsx         |       0 |      100 |       0 |       0 | 1-3
 ```
 
-- **My findings:** The issue is real today: upstream main's `__tests__/` has only `customizer/`, `gh-finder/`, `lib/`, and `test.test.jsx`, and there is no AsciiDoc folder. The 100% branch figure on `Editor.jsx` only appears because the file has no branches; none of its lines run. Gap: I ran this on Windows only, using contributing.md's PowerShell commands rather than `npm test`, and I haven't tried macOS or Linux.
+- **My findings:** The issue is real today: upstream main's `__tests__/` has only `customizer/`, `gh-finder/`, `lib/`, and `test.test.jsx`, and there is no AsciiDoc folder. The 100% branch figure on `Editor.jsx` only appears because the file has no branches; none of its lines run. Gap: I first ran this on Windows, using contributing.md's PowerShell commands, because `npm test` doesn't run there. Before opening the PR I switched to my Mac (also Node 24.13.0), where the repo's own `npm test` and `npm run test:coverage` run as written, and the before output in my PR comes from there. I haven't tried Linux.
 
 **Toolkit**
 
@@ -227,14 +227,14 @@ Four checks, all run on 2026-11-10 on Windows 11 with Node 24.13.0 and Jest 30.5
    - `npx prettier --check __tests__/asciiDoc`: "All matched files use Prettier code style!"
 4. **No new warnings.** The new suite prints nothing but Node's VM-modules notice, which every suite prints on main too.
 
-Gaps: I ran everything only on Windows. I used contributing.md's PowerShell form, so GitHub's Ubuntu CI will be the first run of `npm test` itself. Monaco is mocked, so the tests don't check the real editor, and I didn't test the page in a browser.
+Gaps: these four checks ran on Windows with contributing.md's PowerShell form. Because `npm test` and `npm run format:check` don't work there as written, I switched to my Mac (also Node 24.13.0) before opening the PR and ran `npm test`, `npm run test:coverage` and `npm run format:check` there; that is the output in my PR, and CI's `test` and `prettier` checks pass too. Monaco is mocked, so the tests don't check the real editor, and I didn't test the page in a browser.
 
 **Toolkit**
 
 - Tool: Claude Code ran Jest with coverage before and after, broke `page.jsx` on purpose twice, and ran my manifest's checks through Python's `subprocess(shell=True)`, the same way the ship-gate does.
 - What it produced: `test_evidence.md`. Before: 54 tests and 0% coverage. After: 73 tests and 100% coverage. The breaks failed 9 and then 3 tests, and all three manifest checks exited 0.
 - Difficulties: on Windows, `npm test` doesn't run in cmd.exe, and `npm run format:check` fails on 193 unchanged files because of CRLF line endings. Neither one says anything about my change, and I had to work that out before trusting either result.
-- What changed: the evidence uses contributing.md's PowerShell form and names the gap that Ubuntu CI will be the first run of `npm test` itself. The Prettier check is scoped to my test folder.
+- What changed: I moved from Windows to my Mac to run the repo's own `npm` scripts as written, and the PR shows that output. The Prettier check is scoped to my test folder.
 
 ---
 
@@ -250,7 +250,7 @@ Added one more theme test, "a stored light theme is applied on load", to match t
 
 **2026-11-10 (evening)**
 
-Ran the ship-gate three times: Prettier first, then my own pr-precheck caught a format-check claim in my description that didn't match my manifest, then PASS. Opened PR #702 (GitHub shows 2026-11-11 00:25 UTC). Installed the PR monitor, which first looked in my fork until I ran `gh repo set-default Bashamega/WebDevTools`. Wrote my playbook, with a 4-day threshold taken from five merged outside PRs, and ran the monitor. It said to wait, so I posted nothing.
+Ran the ship-gate three times: Prettier first, then my own pr-precheck caught a format-check claim in my description that didn't match my manifest, then PASS. Switched from Windows to my Mac (Node 24.13.0) and ran `npm test`, `npm run test:coverage` and `npm run format:check`, which all passed, then opened PR #702 (GitHub shows 2026-11-11 00:25 UTC). Installed the PR monitor, which first looked in my fork until I ran `gh repo set-default Bashamega/WebDevTools`. Wrote my playbook, with a 4-day threshold taken from five merged outside PRs, and ran the monitor. It said to wait, so I posted nothing.
 
 **Toolkit**
 
@@ -276,9 +276,9 @@ Ran the ship-gate three times: Prettier first, then my own pr-precheck caught a 
 **Toolkit**
 
 - Tool: the ship-gate, with my ship manifest and pr-precheck rubric. I ran it by hand three times on 2026-11-10 before opening the PR, after the hook test stopped `gh pr create --help` as expected.
-- What it produced: 17:25, BLOCK: the Prettier row failed on my new test file. 17:28, BLOCK: my pr-precheck rejected the description on `repo-checks`, because it said the whole-repo format check flagged nothing while my manifest says it flags my file, and no output was pasted. 17:31, PASS: all three manifest checks ok and all nine pr-precheck checks passed.
+- What it produced: 17:25, BLOCK: the Prettier row failed on my checked-out test file, which `core.autocrlf=true` had given CRLF line endings. 17:28, BLOCK: my pr-precheck rejected the description on `repo-checks`, because it said the whole-repo format check flagged nothing while my manifest says it flags my file, and no output was pasted. 17:31, PASS: all three manifest checks ok and all nine pr-precheck checks passed.
 - Difficulties: the second stop was right, and it was about my own wording, not my code. Even the PASS noted that `test_evidence.md` and my manifest still disagree on what `--end-of-line auto` flags.
-- What changed: I ran `npx prettier --write __tests__/asciiDoc`, then rewrote the description's checks section to paste each command's output. Next I would bring `test_evidence.md` in line with the manifest.
+- What changed: I checked the test file out again with LF line endings (nothing to commit, since the committed file was already LF), then rewrote the description's checks section to paste each command's output. Next I would bring `test_evidence.md` in line with the manifest.
 
 ---
 
@@ -294,7 +294,7 @@ The hardest technical part was jsdom: neither Monaco nor Asciidoctor would load,
 
 **What I'd Do Differently Next Time**
 
-I'd run the repo's whole check suite somewhere that matches CI (WSL or a Linux container) early, so Windows-only failures don't take an evening to tell apart from real ones. I'd write my claim comment with a report-back point from the start, and fix my scout's `unclaimed` and case-sensitive contributing-file checks before the next search instead of working around them. I'd also run `git fetch` before trusting my local branch, and set `gh repo set-default` to the upstream repo as soon as I fork, not after the monitor looks in the wrong place.
+I'd use my Mac for the repo's own `npm` scripts from the start, instead of switching only after Windows-only failures took an evening to tell apart from real ones. I'd write my claim comment with a report-back point from the start, and fix my scout's `unclaimed` and case-sensitive contributing-file checks before the next search instead of working around them. I'd also run `git fetch` before trusting my local branch, and set `gh repo set-default` to the upstream repo as soon as I fork, not after the monitor looks in the wrong place.
 
 ---
 

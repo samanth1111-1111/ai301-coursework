@@ -8,10 +8,10 @@ format criteria grade exactly that. Your course repo link is the whole submissio
 files and no evidence uploads are part of Assignment 5.
 
 **Contribution Number:** [1]
-**Student:** [Samantha Lezama]
+**Student:** Samantha Lezama
 **GitHub Username:** samanth1111-1111
 **Issue:** https://github.com/Bashamega/WebDevTools/issues/394
-**Pull Request:** [GitHub PR link, once opened]
+**Pull Request:** https://github.com/Bashamega/WebDevTools/pull/702
 
 One repository, built across units 5 to 8, telling the whole story of your real
 contribution. Fill it as you work, not at the end — the sections below ask for evidence that
@@ -66,10 +66,9 @@ I merged my three voice-guide copies into one guide at `~/.claude/voice-guard/`,
 
 The install worked on the first try, and the hook test produced both stops: `ship-gate: STOP.` and a voice-guard stop logged in `guard-log.md`. Writing the manifest was the hard part, because the ship-gate runs each check in cmd.exe on Windows. There, the repo's `npm test` fails (`'NODE_OPTIONS' is not recognized`), so I switched the test rows to contributing.md's form, `set "NODE_OPTIONS=--experimental-vm-modules" && npx jest`. The repo's `npm run format:check` flagged 193 files I never touched, because `core.autocrlf=true` checks them out with CRLF line endings. So I moved the full check to the excluded table with that reason and added a Prettier row for just my test folder, which caught a missing newline at the end of my test file. I haven't run the full ship-gate on my branch yet, so it hasn't given a PASS or a reject.
 
-**Unit 8: [one line on the tool work]**
+**Unit 8: Installed the PR monitor, wrote a WebDevTools playbook, and ran it on PR #702**
 
-[2-4 sentences: the PR-monitor and your playbook. What it read, what it
-drafted, what you did with the draft.]
+The monitor read #702 about an hour after I opened it and reported `FEEDBACK-IN`, but the only two comments were Vercel's "authorize it" notice and CodeRabbit's summary, so its state counts bots as review feedback. I had added a playbook rule that I don't reply to bots after `--state` first showed that, and the full run followed it: the draft was "Wait. Send nothing on this run", with the next check due around 2026-11-15, so I sent nothing. I set my 4-day staleness threshold from five merged outside PRs (#697, #696, #692, #581, #452), which all got Bashamega's first comment or merge within 16 hours. The draft also said it couldn't tell which check was failing, so I ran `gh pr checks 702` and confirmed it is Vercel's "Authorization required to deploy", not my tests, which pass in CI.
 
 ---
 
@@ -241,9 +240,6 @@ Gaps: I ran everything only on Windows. I used contributing.md's PowerShell form
 
 ## Implementation Notes
 
-[A running log, added to as you work. Date each entry. What you
-built, decisions you made when you made them, wrong turns included.]
-
 **2026-11-09**
 
 Wrote `__tests__/asciiDoc/page.test.jsx` on `feature/asciidoc-editor-tests`, copying the shape of #696 and #697. Three things fought me under jsdom. Asciidoctor wouldn't load until I patched `document.currentScript` and `process.argv` around its import. Monaco had to be mocked as a `<textarea>`. The preview `<div>` has no role or label, so the tests find it as the editor's next sibling. I decided to keep Asciidoctor real instead of mocking it, so the preview tests check real output. I also found that the theme lives in the shared NavBar, not the page, so the `localStorage` tests go through the NavBar's button. At the end of the day: 12 suites and 72 tests, `src/app/asciiDoc/` at 100%.
@@ -251,6 +247,10 @@ Wrote `__tests__/asciiDoc/page.test.jsx` on `feature/asciidoc-editor-tests`, cop
 **2026-11-10**
 
 Added one more theme test, "a stored light theme is applied on load", to match the dark one (73 tests). That edit dropped the newline at the end of the file, and the Prettier check caught it, so I ran `npx prettier --write __tests__/asciiDoc`. Broke `page.jsx` on purpose twice to check the tests fail (9 failed, then 3 failed), then restored it. Writing the ship manifest turned up two Windows problems. `npm test` fails in cmd.exe because of its Unix-style `NODE_OPTIONS`, so the manifest uses contributing.md's form instead. And `npm run format:check` flags 193 unchanged files because `core.autocrlf=true` gives them CRLF line endings, so the manifest checks only my file and lists the full check as excluded with that reason. I added `AGENTS.md` and `WebStory/` to `.git/info/exclude`, since neither had been excluded yet.
+
+**2026-11-10 (evening)**
+
+Ran the ship-gate three times: Prettier first, then my own pr-precheck caught a format-check claim in my description that didn't match my manifest, then PASS. Opened PR #702 (GitHub shows 2026-11-11 00:25 UTC). Installed the PR monitor, which first looked in my fork until I ran `gh repo set-default Bashamega/WebDevTools`. Wrote my playbook, with a 4-day threshold taken from five merged outside PRs, and ran the monitor. It said to wait, so I posted nothing.
 
 **Toolkit**
 
@@ -263,27 +263,22 @@ Added one more theme test, "a stored light theme is applied on load", to match t
 
 ## Pull Request
 
-**PR Link:** [GitHub PR URL when opened]
+**PR Link:** https://github.com/Bashamega/WebDevTools/pull/702
 
-**PR Description:** [what the PR says; much of the content above
-adapts into it]
+**PR Description:** "test: add Jest tests for the AsciiDoc Editor" adds one file, `__tests__/asciiDoc/page.test.jsx`, with 19 tests in four groups (rendering, user interactions, props and state, integration workflows). It explains the two mocks, Monaco as a `<textarea>` and a load-time wrapper for Asciidoctor so the real converter still runs, says no other files change and why there is no docs change, discloses that I used Claude Code, and ends with `Fixes #394`.
 
 **Maintainer Feedback:**
 
-- [Date]: [feedback received, or "none yet"; silence is a normal
-  state and costs you nothing]
-- [Date]: [how you addressed it]
+- 2026-11-10: none yet
 
-**Status:** [Awaiting review / Iterating / Merged / Closed. The
-status is a fact you record, never a grade: the PR is graded as
-opened.]
+**Status:** Awaiting review
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: the ship-gate, with my ship manifest and pr-precheck rubric. I ran it by hand three times on 2026-11-10 before opening the PR, after the hook test stopped `gh pr create --help` as expected.
+- What it produced: 17:25, BLOCK: the Prettier row failed on my new test file. 17:28, BLOCK: my pr-precheck rejected the description on `repo-checks`, because it said the whole-repo format check flagged nothing while my manifest says it flags my file, and no output was pasted. 17:31, PASS: all three manifest checks ok and all nine pr-precheck checks passed.
+- Difficulties: the second stop was right, and it was about my own wording, not my code. Even the PASS noted that `test_evidence.md` and my manifest still disagree on what `--end-of-line auto` flags.
+- What changed: I ran `npx prettier --write __tests__/asciiDoc`, then rewrote the description's checks section to paste each command's output and state the whole-repo format failure as a fact. Next I would bring `test_evidence.md` in line with the manifest.
 
 ---
 
@@ -291,25 +286,20 @@ opened.]
 
 **Technical Skills Gained**
 
-[What you learned technically, named concretely.]
+I learned to write Jest tests with React Testing Library for a Next.js page, including mocking a component library (`@monaco-editor/react` as a `<textarea>`) and getting a library that expects a browser (Asciidoctor) to load under jsdom by patching `document.currentScript` and `process.argv` only while it loads. I learned to use coverage (`--coverage --collectCoverageFrom`) as before-and-after evidence, and to break the code on purpose to prove the tests can fail. On Windows I learned the difference between PowerShell's `$env:` and cmd.exe's `set`, and how `core.autocrlf` makes Prettier flag files I never touched. I also got comfortable with `gh` beyond basics: `gh repo set-default`, `gh pr checks`, and `gh pr view --json`.
 
 **Challenges Overcome**
 
-[What was hard and how you solved it; point at the real events, the
-Toolkit blocks above are full of them.]
+The hardest technical part was jsdom: neither Monaco nor Asciidoctor would load, and the preview has no accessible role. I mocked Monaco, patched Asciidoctor's load so the real converter runs, and found the preview as the editor's next sibling (Implementation Notes, 2026-11-09). The Windows toolchain was the next fight: `npm test` doesn't run in cmd.exe and `format:check` flagged 193 unchanged files, so I used contributing.md's form and scoped Prettier to my folder, with the reason written in my manifest. My own tools also pushed back in useful ways: the scout rejected the issue I already owned, repro-check showed my posted claim broke my own voice rule, and the ship-gate stopped a description sentence that overstated a check. Each time I fixed my work or wrote down the tool's gap instead of ignoring it.
 
 **What I'd Do Differently Next Time**
 
-[Reflection on your process.]
+I'd run the repo's whole check suite somewhere that matches CI (WSL or a Linux container) early, so Windows-only failures don't take an evening to tell apart from real ones. I'd write my claim comment with a report-back point from the start, and fix my scout's `unclaimed` and case-sensitive contributing-file checks before the next search instead of working around them. I'd also run `git fetch` before trusting my local branch, and set `gh repo set-default` to the upstream repo as soon as I fork, not after the monitor looks in the wrong place.
 
 ---
 
 ## Resources Used
 
-[What actually helped, not a reading list. List things this story
-already shows you using: the doc you followed to set the environment
-up, the thread that explained the bug, the person who answered you.
-One real entry beats ten plausible ones.]
-
-- [Link to documentation that helped]
-- [Discussion, issue, or post that helped]
+- WebDevTools `contributing.md`, especially "Run the Tests", for the PowerShell test commands and the `__tests__` folder layout: https://github.com/Bashamega/WebDevTools/blob/main/contributing.md
+- PRs #696 and #697, the recent Jest test PRs I copied the test pattern from: https://github.com/Bashamega/WebDevTools/pull/696 and https://github.com/Bashamega/WebDevTools/pull/697
+- The issue thread, where Bashamega assigned #394 to me: https://github.com/Bashamega/WebDevTools/issues/394

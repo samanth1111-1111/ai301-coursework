@@ -121,7 +121,7 @@ On upstream main (`3b10434`), `__tests__/` has no `asciiDoc` folder. The 11 exis
 
 **Environment Setup**
 
-- OS: Windows 11 Home (10.0.26200), Windows PowerShell
+- OS: Windows 11 Home (10.0.26200), Windows PowerShell, for the reproduction below. Before opening the PR I switched to macOS, where the repo's own `npm test`, `npm run test:coverage` and `npm run format:check` run as written; the output in my PR comes from there.
 - Node v24.13.0, npm 11.6.2, Jest 30.5.0
 - Project: my fork of Bashamega/WebDevTools at commit `3b10434c564f1c450e777535e33f6f52456d402f` ("test: add Jest tests for Image Color Picker (#696)"), which was upstream `main` when I fetched it on 2026-11-09.
 - Setup: forked and cloned the repo, then ran `npm install`.

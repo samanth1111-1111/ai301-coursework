@@ -68,7 +68,7 @@ The install worked on the first try, and the hook test produced both stops: `shi
 
 **Unit 8: Installed the PR monitor, wrote a WebDevTools playbook, and ran it on PR #702**
 
-The monitor read #702 about an hour after I opened it and reported `FEEDBACK-IN`, but the only two comments were Vercel's "authorize it" notice and CodeRabbit's summary, so its state counts bots as review feedback. I had added a playbook rule that I don't reply to bots after `--state` first showed that, and the full run followed it: the draft was "Wait. Send nothing on this run", with the next check due around 2026-11-15, so I sent nothing. I set my 4-day staleness threshold from five merged outside PRs (#697, #696, #692, #581, #452), which all got Bashamega's first comment or merge within 16 hours. The draft also said it couldn't tell which check was failing, so I ran `gh pr checks 702` and confirmed it is Vercel's "Authorization required to deploy", not my tests, which pass in CI.
+The monitor read #702 about an hour after I opened it and reported `FEEDBACK-IN`, but the only two comments were Vercel's "authorize it" notice and CodeRabbit's summary, so its state counts bots as review feedback. I had added a playbook rule that I don't reply to bots after `--state` first showed that, and the full run followed it: the draft was "Wait. Send nothing on this run", with the next check due around 2026-11-15, so I sent nothing. I set my 4-day staleness threshold from five merged outside PRs (#697, #696, #692, #581, #452), which all got Bashamega's first comment or merge within 16 hours.
 
 ---
 

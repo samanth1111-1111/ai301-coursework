@@ -265,7 +265,7 @@ Ran the ship-gate three times: Prettier first, then my own pr-precheck caught a 
 
 **PR Link:** https://github.com/Bashamega/WebDevTools/pull/702
 
-**PR Description:** "test: add Jest tests for the AsciiDoc Editor" adds one file, `__tests__/asciiDoc/page.test.jsx`, with 19 tests in four groups (rendering, user interactions, props and state, integration workflows). It explains the two mocks, Monaco as a `<textarea>` and a load-time wrapper for Asciidoctor so the real converter still runs, says no other files change and why there is no docs change, discloses that I used Claude Code, and ends with `Fixes #394`.
+**PR Description:** "test: add Jest tests for the AsciiDoc Editor" adds one file, `__tests__/asciiDoc/page.test.jsx`, with 19 tests in four groups (rendering, user interactions, props and state, integration workflows). It explains the two mocks, Monaco as a `<textarea>` and a load-time wrapper for Asciidoctor so the real converter still runs, says no other files change and why there is no docs change, discloses my AI use, and ends with `Fixes #394`.
 
 **Maintainer Feedback:**
 
@@ -278,7 +278,7 @@ Ran the ship-gate three times: Prettier first, then my own pr-precheck caught a 
 - Tool: the ship-gate, with my ship manifest and pr-precheck rubric. I ran it by hand three times on 2026-11-10 before opening the PR, after the hook test stopped `gh pr create --help` as expected.
 - What it produced: 17:25, BLOCK: the Prettier row failed on my new test file. 17:28, BLOCK: my pr-precheck rejected the description on `repo-checks`, because it said the whole-repo format check flagged nothing while my manifest says it flags my file, and no output was pasted. 17:31, PASS: all three manifest checks ok and all nine pr-precheck checks passed.
 - Difficulties: the second stop was right, and it was about my own wording, not my code. Even the PASS noted that `test_evidence.md` and my manifest still disagree on what `--end-of-line auto` flags.
-- What changed: I ran `npx prettier --write __tests__/asciiDoc`, then rewrote the description's checks section to paste each command's output and state the whole-repo format failure as a fact. Next I would bring `test_evidence.md` in line with the manifest.
+- What changed: I ran `npx prettier --write __tests__/asciiDoc`, then rewrote the description's checks section to paste each command's output. Next I would bring `test_evidence.md` in line with the manifest.
 
 ---
 
